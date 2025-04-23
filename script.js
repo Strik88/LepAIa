@@ -535,17 +535,13 @@ Ensure the description is professional, factual, concise but thorough (about 150
         generateOrgBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connecting to Perplexity AI...';
         
         try {
-            // Using a public CORS proxy that supports authorization headers
-            // Try cors-anywhere which is more robust with headers
-            const CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
-            const API_URL = "https://api.perplexity.ai/chat/completions";
+            // Using local proxy server
+            const LOCAL_API_URL = "http://localhost:3000/api/proxy/perplexity";
             
-            const response = await fetch(`${CORS_PROXY}${API_URL}`, {
+            const response = await fetch(LOCAL_API_URL, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${PERPLEXITY_API_KEY}`,
-                    'Origin': 'https://strik88.github.io'
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     model: "sonar-small-online", // Using Sonar model specifically as requested
