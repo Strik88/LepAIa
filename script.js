@@ -495,7 +495,7 @@ document.addEventListener('DOMContentLoaded', function() {
         generateOrgBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
         
         try {
-            console.log("Generating description...");
+            console.log("Generating description with Perplexity API...");
             const description = await generateCompanyDescription(companyName);
             console.log("Description generated:", description.substring(0, 50) + "...");
             orgDescriptionTextarea.value = description;
@@ -503,7 +503,9 @@ document.addEventListener('DOMContentLoaded', function() {
             showToast('Company description generated successfully', 'success');
         } catch (error) {
             console.error('Error generating description:', error);
-            showToast('Failed to generate description. Please try again.', 'error');
+            showToast('Could not connect to Perplexity API. Please check your internet connection and try again.', 'error');
+            orgDescriptionTextarea.value = 'Error: Could not generate description. Please check console for details.';
+            autoResize.call(orgDescriptionTextarea);
         } finally {
             // Reset button state
             generateOrgBtn.disabled = false;
@@ -512,6 +514,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     async function generateCompanyDescription(companyName) {
+        // Only use Perplexity API - no local fallback
         const PERPLEXITY_API_KEY = "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";
         
         const prompt = `I need a comprehensive business description of ${companyName} formatted as a cohesive paragraph for a company profile. 
@@ -527,34 +530,48 @@ Please include:
 
 Ensure the description is professional, factual, concise but thorough (about 150-200 words), and written in the third person as if for a formal company profile document. Focus on providing useful business context that would help a consultant understand the company's operations.`;
 
-        const response = await fetch('https://api.perplexity.ai/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${PERPLEXITY_API_KEY}`
-            },
-            body: JSON.stringify({
-                model: "llama-3-sonar-small-32k",
-                messages: [
-                    {
-                        role: "system",
-                        content: "You are an expert business analyst who provides detailed, accurate, and professional company descriptions for business profiles."
-                    },
-                    {
-                        role: "user",
-                        content: prompt
-                    }
-                ],
-                max_tokens: 1000
-            })
-        });
+        // Show loading state
+        generateOrgBtn.disabled = true;
+        generateOrgBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connecting to Perplexity AI...';
         
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || 'API request failed');
+        try {
+            // Direct API call to Perplexity - no proxy
+            const response = await fetch('https://api.perplexity.ai/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${PERPLEXITY_API_KEY}`
+                },
+                body: JSON.stringify({
+                    model: "sonar-small-online", // Using Sonar model specifically as requested
+                    messages: [
+                        {
+                            role: "system",
+                            content: "You are an expert business analyst who provides detailed, accurate, and professional company descriptions for business profiles based only on factual information. Never make up details."
+                        },
+                        {
+                            role: "user",
+                            content: prompt
+                        }
+                    ],
+                    max_tokens: 1000
+                })
+            });
+            
+            // Handle API errors
+            if (!response.ok) {
+                const errorData = await response.text();
+                console.error('Perplexity API error:', response.status, errorData);
+                throw new Error(`Perplexity API error: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            return data.choices[0].message.content;
+        } catch (error) {
+            console.error('Error with Perplexity API:', error);
+            throw error; // Let the calling function handle the error
+        } finally {
+            // Reset button state handled by calling function
         }
-        
-        const data = await response.json();
-        return data.choices[0].message.content;
     }
 }); 
