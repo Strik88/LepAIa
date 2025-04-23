@@ -535,9 +535,8 @@ Ensure the description is professional, factual, concise but thorough (about 150
         generateOrgBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connecting to Perplexity AI...';
         
         try {
-            // Direct call to Perplexity API through a public CORS proxy
-            // Note: For production use, you should set up your own proxy or backend
-            const CORS_PROXY = "https://api.allorigins.win/raw?url=";
+            // Using corsproxy.io which supports authorization headers
+            const CORS_PROXY = "https://corsproxy.io/?";
             const API_URL = encodeURIComponent("https://api.perplexity.ai/chat/completions");
             
             const response = await fetch(`${CORS_PROXY}${API_URL}`, {
