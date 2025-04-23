@@ -56,19 +56,20 @@ body {
 /* Header Styles */
 header {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 60px;
+    padding-top: 20px;
 }
 
 .logo-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 16px;
+    margin-bottom: 40px;
 }
 
 .logo {
-    max-width: 200px;
-    margin-bottom: 20px;
+    max-width: 120px;
+    margin-bottom: 30px;
 }
 
 .logo img {
@@ -80,7 +81,8 @@ header {
     color: var(--text-light);
     font-size: 18px;
     font-weight: 500;
-    margin-bottom: 30px;
+    margin-top: 30px;
+    margin-bottom: 10px;
 }
 
 h1, h2, h3 {
@@ -94,7 +96,7 @@ h1, h2, h3 {
 h1 {
     text-align: center;
     font-size: 32px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     position: relative;
     font-weight: 700;
 }
@@ -272,7 +274,7 @@ footer {
     }
     
     .logo {
-        max-width: 150px;
+        max-width: 100px;
     }
     
     .tagline {
@@ -309,6 +311,6 @@ footer {
     }
     
     .logo {
-        max-width: 120px;
+        max-width: 80px;
     }
 } 
