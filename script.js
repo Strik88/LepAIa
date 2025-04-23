@@ -403,6 +403,49 @@ document.addEventListener('DOMContentLoaded', function() {
                 box-shadow: 0 0 0 3px rgba(78, 76, 236, 0.1);
                 border-color: var(--primary-color);
             }
+
+            /* Toast notification styles */
+            .toast {
+                position: fixed;
+                bottom: 30px;
+                left: 50%;
+                transform: translateX(-50%) translateY(100px);
+                padding: 12px 24px;
+                border-radius: 4px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                font-weight: 500;
+                display: flex;
+                align-items: center;
+                opacity: 0;
+                transition: transform 0.3s, opacity 0.3s;
+                z-index: 1000;
+                max-width: 90%;
+            }
+            
+            .toast.visible {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+            
+            .toast i {
+                margin-right: 8px;
+                font-size: 20px;
+            }
+            
+            .toast-success {
+                background-color: #4CAF50;
+                color: white;
+            }
+            
+            .toast-error {
+                background-color: #F44336;
+                color: white;
+            }
+            
+            .toast-info {
+                background-color: var(--primary-color);
+                color: white;
+            }
         `;
         document.head.appendChild(styleElement);
     }
@@ -410,13 +453,37 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add save confirmation styles
     addSaveConfirmationStyles();
 
+    // Function to show toast notifications
+    function showToast(message, type = 'info') {
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${message}`;
+        
+        document.body.appendChild(toast);
+        
+        // Add visible class to trigger animation
+        setTimeout(() => {
+            toast.classList.add('visible');
+        }, 10);
+        
+        // Remove after animation completes
+        setTimeout(() => {
+            toast.classList.remove('visible');
+            setTimeout(() => {
+                document.body.removeChild(toast);
+            }, 300);
+        }, 3000);
+    }
+
     // Generate organization description with AI
     const generateOrgBtn = document.getElementById('generate-org-btn');
     const orgDescriptionTextarea = document.getElementById('organization-description');
     const companyNameInput = document.getElementById('client-dropdown');
 
     generateOrgBtn.addEventListener('click', async () => {
+        console.log("Button clicked!");
         const companyName = companyNameInput.value.trim();
+        console.log("Company name:", companyName);
         
         if (!companyName) {
             showToast('Please enter a company name first', 'error');
@@ -428,8 +495,11 @@ document.addEventListener('DOMContentLoaded', function() {
         generateOrgBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
         
         try {
+            console.log("Generating description...");
             const description = await generateCompanyDescription(companyName);
+            console.log("Description generated:", description.substring(0, 50) + "...");
             orgDescriptionTextarea.value = description;
+            autoResize.call(orgDescriptionTextarea);
             showToast('Company description generated successfully', 'success');
         } catch (error) {
             console.error('Error generating description:', error);
