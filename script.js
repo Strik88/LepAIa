@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const saveButton = document.getElementById('save-btn');
     const textareas = document.querySelectorAll('textarea');
     
-    // Klant elementen
+    // Client elements
     const clientDropdown = document.getElementById('client-dropdown');
     const newClientInput = document.getElementById('new-client');
     const addClientButton = document.getElementById('add-client-btn');
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const selectedClientBadge = document.getElementById('selected-client-badge');
     const selectedClientName = document.getElementById('selected-client-name');
     
-    // Huidige geselecteerde klant
+    // Currently selected client
     let currentClient = '';
     
     // Initialize clients
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Event listeners voor klanten
+    // Event listeners for client selection
     clientDropdown.addEventListener('change', handleClientChange);
     addClientButton.addEventListener('click', addNewClient);
     newClientInput.addEventListener('keypress', function(e) {
@@ -83,41 +83,44 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Update de client badge
+    // Update the client badge
     function updateClientBadge() {
         if (!currentClient) {
-            selectedClientName.textContent = 'Selecteer een klant';
+            selectedClientName.textContent = 'Select a client';
             selectedClientBadge.classList.add('no-client');
             selectedClientBadge.classList.remove('empty');
         } else {
             selectedClientName.textContent = currentClient;
             selectedClientBadge.classList.remove('no-client');
             selectedClientBadge.classList.remove('empty');
+            
+            // Make client name more prominent
+            selectedClientBadge.classList.add('has-client');
         }
     }
     
-    // Functie om klanten te initialiseren
+    // Function to initialize clients
     function initializeClients() {
-        // Haal opgeslagen klanten op of start met een lege lijst
+        // Get saved clients or start with an empty list
         const savedCustomClients = localStorage.getItem('customClients');
         let customClients = savedCustomClients ? JSON.parse(savedCustomClients) : [];
         
-        // Vul de lijst met aangepaste klanten
+        // Fill the list with custom clients
         renderClientList(customClients);
         
-        // Als er een laatst geselecteerde klant was, selecteer deze
+        // If there was a last selected client, select it
         const lastSelectedClient = localStorage.getItem('lastSelectedClient');
         if (lastSelectedClient) {
             currentClient = lastSelectedClient;
             
-            // Selecteer in dropdown als het een standaard klant is
+            // Select in dropdown if it's a standard client
             if (Array.from(clientDropdown.options).some(option => option.value === lastSelectedClient.toLowerCase())) {
                 clientDropdown.value = lastSelectedClient.toLowerCase();
             } else {
-                clientDropdown.value = ""; // Leeg als het een aangepaste klant is
+                clientDropdown.value = ""; // Empty if it's a custom client
             }
             
-            // Highlght in de lijst als het een aangepaste klant is
+            // Highlight in the list if it's a custom client
             const clientItems = document.querySelectorAll('#user-clients li');
             clientItems.forEach(item => {
                 if (item.getAttribute('data-client') === lastSelectedClient) {
@@ -126,45 +129,45 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
         
-        // Update de client badge
+        // Update the client badge
         updateClientBadge();
     }
     
-    // Functie om een nieuwe klant toe te voegen
+    // Function to add a new client
     function addNewClient() {
         const clientName = newClientInput.value.trim();
         
         if (clientName === '') {
-            alert('Vul een klantnaam in');
+            alert('Please enter a client name');
             return;
         }
         
-        // Haal bestaande klanten op
+        // Get existing clients
         const savedCustomClients = localStorage.getItem('customClients');
         let customClients = savedCustomClients ? JSON.parse(savedCustomClients) : [];
         
-        // Controleer of de klant al bestaat
+        // Check if the client already exists
         if (customClients.includes(clientName) || 
             Array.from(clientDropdown.options).some(option => option.value === clientName.toLowerCase())) {
-            alert('Deze klant bestaat al');
+            alert('This client already exists');
             return;
         }
         
-        // Voeg de nieuwe klant toe
+        // Add the new client
         customClients.push(clientName);
         localStorage.setItem('customClients', JSON.stringify(customClients));
         
-        // Werk de lijst bij
+        // Update the list
         renderClientList(customClients);
         
-        // Reset input veld
+        // Reset input field
         newClientInput.value = '';
         
-        // Selecteer de nieuwe klant
+        // Select the new client
         selectClient(clientName);
     }
     
-    // Functie om de klantlijst te renderen
+    // Function to render the client list
     function renderClientList(clients) {
         userClientsList.innerHTML = '';
         
@@ -185,21 +188,21 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Functie om een klant te selecteren
+    // Function to select a client
     function selectClient(clientName) {
         const previousClient = currentClient;
         currentClient = clientName;
         
-        // Sla huidige profieldata op voor vorige klant als die bestond
+        // Save current profile data for previous client if it existed
         if (previousClient) {
             saveClientData(previousClient);
         }
         
-        // Sla de laatst geselecteerde klant op
+        // Save the last selected client
         localStorage.setItem('lastSelectedClient', clientName);
         
-        // Update UI voor selectie
-        // Reset dropdown als het een custom klant is
+        // Update UI for selection
+        // Reset dropdown if it's a custom client
         const dropdownOption = Array.from(clientDropdown.options).find(option => option.value === clientName.toLowerCase());
         if (dropdownOption) {
             clientDropdown.value = clientName.toLowerCase();
@@ -207,7 +210,7 @@ document.addEventListener('DOMContentLoaded', function() {
             clientDropdown.value = "";
         }
         
-        // Update lijst selectie
+        // Update list selection
         const clientItems = document.querySelectorAll('#user-clients li');
         clientItems.forEach(item => {
             if (item.getAttribute('data-client') === clientName) {
@@ -217,19 +220,19 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // Update de client badge met de geselecteerde klantnaam
+        // Update the client badge with the selected client name
         updateClientBadge();
         
-        // Laad de data voor deze klant
+        // Load the data for this client
         loadClientData(clientName);
     }
     
-    // Handler voor veranderingen in dropdown
+    // Handler for dropdown changes
     function handleClientChange() {
         const selectedClient = clientDropdown.value;
         
         if (selectedClient) {
-            // Zet eerste letter van elke woord naar hoofdletter voor display
+            // Capitalize first letter of each word for display
             const displayName = selectedClient
                 .split(' ')
                 .map(word => word.charAt(0).toUpperCase() + word.slice(1))
@@ -265,7 +268,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function saveFormData() {
         try {
             if (!currentClient) {
-                alert('Selecteer eerst een klant');
+                alert('Please select a client first');
                 return false;
             }
             

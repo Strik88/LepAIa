@@ -12,16 +12,16 @@
 </head>
 <body>
     <div class="app-container">
-        <!-- Sidebar voor klantselectie -->
+        <!-- Client selection sidebar -->
         <aside class="sidebar">
             <div class="sidebar-header">
-                <h2><i class="fas fa-building"></i> Klanten</h2>
+                <h2><i class="fas fa-building"></i> Clients</h2>
             </div>
             
             <div class="client-selector">
-                <label for="client-dropdown">Selecteer klant:</label>
+                <label for="client-dropdown">Select client:</label>
                 <select id="client-dropdown">
-                    <option value="">-- Kies een klant --</option>
+                    <option value="">-- Choose a client --</option>
                     <option value="lepaya">Lepaya</option>
                     <option value="workrate">Workrate</option>
                     <option value="kpmg">KPMG Nederland</option>
@@ -33,24 +33,24 @@
             </div>
             
             <div class="client-add">
-                <h3>Nieuwe klant toevoegen</h3>
+                <h3>Add new client</h3>
                 <div class="input-group">
-                    <input type="text" id="new-client" placeholder="Klantnaam...">
+                    <input type="text" id="new-client" placeholder="Client name...">
                     <button id="add-client-btn" class="add-button">
-                        <i class="fas fa-plus"></i> Toevoegen
+                        <i class="fas fa-plus"></i> Add
                     </button>
                 </div>
             </div>
             
             <div class="client-list">
-                <h3>Mijn klanten</h3>
+                <h3>My clients</h3>
                 <ul id="user-clients">
-                    <!-- Dynamisch gevuld door JavaScript -->
+                    <!-- Dynamically filled by JavaScript -->
                 </ul>
             </div>
         </aside>
     
-        <!-- Hoofdinhoud -->
+        <!-- Main content -->
         <div class="main-content">
             <div class="container">
                 <header>
@@ -62,7 +62,7 @@
                     <h1>Company Profile</h1>
                     <div class="client-badge" id="selected-client-badge">
                         <i class="fas fa-building"></i>
-                        <span id="selected-client-name">Selecteer een klant</span>
+                        <span id="selected-client-name">Select a client</span>
                     </div>
                     <p class="tagline">Help us understand your organization better for tailored solutions</p>
                 </header>
