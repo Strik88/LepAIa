@@ -1,0 +1,16 @@
+{
+  "name": "lepaia",
+  "version": "1.0.0",
+  "description": "LepAIa - Lepaya AI Assistant",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+} 

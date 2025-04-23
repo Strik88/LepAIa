@@ -535,12 +535,13 @@ Ensure the description is professional, factual, concise but thorough (about 150
         generateOrgBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connecting to Perplexity AI...';
         
         try {
-            // Direct API call to Perplexity - no proxy
-            const response = await fetch('https://api.perplexity.ai/chat/completions', {
+            // Use the Vercel API proxy with absolute URL
+            const VERCEL_URL = "https://lep-ai-d30v0ty1g-strik88s-projects.vercel.app";
+            
+            const response = await fetch(`${VERCEL_URL}/api/perplexity`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${PERPLEXITY_API_KEY}`
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     model: "sonar-small-online", // Using Sonar model specifically as requested
@@ -561,14 +562,14 @@ Ensure the description is professional, factual, concise but thorough (about 150
             // Handle API errors
             if (!response.ok) {
                 const errorData = await response.text();
-                console.error('Perplexity API error:', response.status, errorData);
-                throw new Error(`Perplexity API error: ${response.status}`);
+                console.error('API error:', response.status, errorData);
+                throw new Error(`API error: ${response.status}`);
             }
             
             const data = await response.json();
             return data.choices[0].message.content;
         } catch (error) {
-            console.error('Error with Perplexity API:', error);
+            console.error('Error with API:', error);
             throw error; // Let the calling function handle the error
         } finally {
             // Reset button state handled by calling function
