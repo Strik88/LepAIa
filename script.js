@@ -13,6 +13,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const saveButton = document.getElementById('save-btn');
     const textareas = document.querySelectorAll('textarea');
     
+    // Klant elementen
+    const clientDropdown = document.getElementById('client-dropdown');
+    const newClientInput = document.getElementById('new-client');
+    const addClientButton = document.getElementById('add-client-btn');
+    const userClientsList = document.getElementById('user-clients');
+    
+    // Huidige geselecteerde klant
+    let currentClient = '';
+    
+    // Initialize clients
+    initializeClients();
+    
     // Add auto-resize functionality to textareas
     textareas.forEach(textarea => {
         textarea.addEventListener('input', autoResize);
@@ -39,6 +51,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Event listeners voor klanten
+    clientDropdown.addEventListener('change', handleClientChange);
+    addClientButton.addEventListener('click', addNewClient);
+    newClientInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            addNewClient();
+        }
+    });
+    
     // Load saved data from localStorage if available
     loadFormData();
 
@@ -59,6 +80,143 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
+    
+    // Functie om klanten te initialiseren
+    function initializeClients() {
+        // Haal opgeslagen klanten op of start met een lege lijst
+        const savedCustomClients = localStorage.getItem('customClients');
+        let customClients = savedCustomClients ? JSON.parse(savedCustomClients) : [];
+        
+        // Vul de lijst met aangepaste klanten
+        renderClientList(customClients);
+        
+        // Als er een laatst geselecteerde klant was, selecteer deze
+        const lastSelectedClient = localStorage.getItem('lastSelectedClient');
+        if (lastSelectedClient) {
+            currentClient = lastSelectedClient;
+            
+            // Selecteer in dropdown als het een standaard klant is
+            if (Array.from(clientDropdown.options).some(option => option.value === lastSelectedClient)) {
+                clientDropdown.value = lastSelectedClient;
+            } else {
+                clientDropdown.value = ""; // Leeg als het een aangepaste klant is
+            }
+            
+            // Highlght in de lijst als het een aangepaste klant is
+            const clientItems = document.querySelectorAll('#user-clients li');
+            clientItems.forEach(item => {
+                if (item.getAttribute('data-client') === lastSelectedClient) {
+                    item.classList.add('active');
+                }
+            });
+        }
+    }
+    
+    // Functie om een nieuwe klant toe te voegen
+    function addNewClient() {
+        const clientName = newClientInput.value.trim();
+        
+        if (clientName === '') {
+            alert('Vul een klantnaam in');
+            return;
+        }
+        
+        // Haal bestaande klanten op
+        const savedCustomClients = localStorage.getItem('customClients');
+        let customClients = savedCustomClients ? JSON.parse(savedCustomClients) : [];
+        
+        // Controleer of de klant al bestaat
+        if (customClients.includes(clientName) || 
+            Array.from(clientDropdown.options).some(option => option.value === clientName.toLowerCase())) {
+            alert('Deze klant bestaat al');
+            return;
+        }
+        
+        // Voeg de nieuwe klant toe
+        customClients.push(clientName);
+        localStorage.setItem('customClients', JSON.stringify(customClients));
+        
+        // Werk de lijst bij
+        renderClientList(customClients);
+        
+        // Reset input veld
+        newClientInput.value = '';
+        
+        // Selecteer de nieuwe klant
+        selectClient(clientName);
+    }
+    
+    // Functie om de klantlijst te renderen
+    function renderClientList(clients) {
+        userClientsList.innerHTML = '';
+        
+        clients.forEach(client => {
+            const listItem = document.createElement('li');
+            listItem.textContent = client;
+            listItem.setAttribute('data-client', client);
+            
+            if (client === currentClient) {
+                listItem.classList.add('active');
+            }
+            
+            listItem.addEventListener('click', function() {
+                selectClient(client);
+            });
+            
+            userClientsList.appendChild(listItem);
+        });
+    }
+    
+    // Functie om een klant te selecteren
+    function selectClient(clientName) {
+        const previousClient = currentClient;
+        currentClient = clientName;
+        
+        // Sla huidige profieldata op voor vorige klant als die bestond
+        if (previousClient) {
+            saveClientData(previousClient);
+        }
+        
+        // Sla de laatst geselecteerde klant op
+        localStorage.setItem('lastSelectedClient', clientName);
+        
+        // Update UI voor selectie
+        // Reset dropdown als het een custom klant is
+        const dropdownOption = Array.from(clientDropdown.options).find(option => option.value === clientName.toLowerCase());
+        if (dropdownOption) {
+            clientDropdown.value = clientName.toLowerCase();
+        } else {
+            clientDropdown.value = "";
+        }
+        
+        // Update lijst selectie
+        const clientItems = document.querySelectorAll('#user-clients li');
+        clientItems.forEach(item => {
+            if (item.getAttribute('data-client') === clientName) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
+        });
+        
+        // Laad de data voor deze klant
+        loadClientData(clientName);
+    }
+    
+    // Handler voor veranderingen in dropdown
+    function handleClientChange() {
+        const selectedClient = clientDropdown.value;
+        
+        if (selectedClient) {
+            // Zet eerste letter van elke woord naar hoofdletter voor display
+            const displayName = selectedClient
+                .split(' ')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ');
+                
+            selectClient(displayName);
+        }
+    }
     
     // Function to show save confirmation
     function showSaveConfirmation() {
@@ -85,6 +243,22 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to save form data to localStorage
     function saveFormData() {
         try {
+            if (!currentClient) {
+                alert('Selecteer eerst een klant');
+                return false;
+            }
+            
+            return saveClientData(currentClient);
+        } catch (error) {
+            console.error('Error saving data:', error);
+            alert('There was a problem saving your data. Please try again.');
+            return false;
+        }
+    }
+    
+    // Function to save client-specific data
+    function saveClientData(clientName) {
+        try {
             const formData = {
                 organization: formElements.organization.value,
                 industry: formElements.industry.value,
@@ -95,11 +269,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 lastSaved: new Date().toISOString()
             };
 
-            localStorage.setItem('companyProfileData', JSON.stringify(formData));
+            localStorage.setItem(`companyProfileData_${clientName}`, JSON.stringify(formData));
             return true;
         } catch (error) {
-            console.error('Error saving data:', error);
-            alert('There was a problem saving your data. Please try again.');
+            console.error('Error saving client data:', error);
             return false;
         }
     }
@@ -107,7 +280,21 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to load form data from localStorage
     function loadFormData() {
         try {
-            const savedData = localStorage.getItem('companyProfileData');
+            if (currentClient) {
+                loadClientData(currentClient);
+            } else {
+                // Clear form if no client is selected
+                clearForm();
+            }
+        } catch (error) {
+            console.error('Error loading data:', error);
+        }
+    }
+    
+    // Function to load client-specific data
+    function loadClientData(clientName) {
+        try {
+            const savedData = localStorage.getItem(`companyProfileData_${clientName}`);
             
             if (savedData) {
                 const formData = JSON.parse(savedData);
@@ -134,9 +321,25 @@ document.addEventListener('DOMContentLoaded', function() {
                         saveNotice.textContent = `Your information is saved locally on your device. Last saved: ${lastSaved.toLocaleString()}`;
                     }
                 }
+            } else {
+                // If no saved data for this client, clear the form
+                clearForm();
             }
         } catch (error) {
-            console.error('Error loading data:', error);
+            console.error('Error loading client data:', error);
+            clearForm();
+        }
+    }
+    
+    // Function to clear the form
+    function clearForm() {
+        Object.values(formElements).forEach(element => {
+            element.value = '';
+        });
+        
+        const saveNotice = document.querySelector('.save-notice');
+        if (saveNotice) {
+            saveNotice.textContent = 'Your information will be saved locally on your device';
         }
     }
     
@@ -173,7 +376,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             .profile-section.focused {
-                box-shadow: 0 0 0 3px rgba(58, 110, 165, 0.1);
+                box-shadow: 0 0 0 3px rgba(78, 76, 236, 0.1);
                 border-color: var(--primary-color);
             }
         `;
