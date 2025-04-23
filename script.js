@@ -536,7 +536,7 @@ Ensure the description is professional, factual, concise but thorough (about 150
         
         try {
             // Use the Vercel API proxy with absolute URL
-            const VERCEL_URL = "https://lep-ai-d30v0ty1g-strik88s-projects.vercel.app";
+            const VERCEL_URL = "https://lep-ai-in3ccy835-strik88s-projects.vercel.app";
             
             const response = await fetch(`${VERCEL_URL}/api/perplexity`, {
                 method: 'POST',
