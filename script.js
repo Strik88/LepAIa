@@ -18,6 +18,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const newClientInput = document.getElementById('new-client');
     const addClientButton = document.getElementById('add-client-btn');
     const userClientsList = document.getElementById('user-clients');
+    const selectedClientBadge = document.getElementById('selected-client-badge');
+    const selectedClientName = document.getElementById('selected-client-name');
     
     // Huidige geselecteerde klant
     let currentClient = '';
@@ -81,6 +83,19 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
+    // Update de client badge
+    function updateClientBadge() {
+        if (!currentClient) {
+            selectedClientName.textContent = 'Selecteer een klant';
+            selectedClientBadge.classList.add('no-client');
+            selectedClientBadge.classList.remove('empty');
+        } else {
+            selectedClientName.textContent = currentClient;
+            selectedClientBadge.classList.remove('no-client');
+            selectedClientBadge.classList.remove('empty');
+        }
+    }
+    
     // Functie om klanten te initialiseren
     function initializeClients() {
         // Haal opgeslagen klanten op of start met een lege lijst
@@ -96,8 +111,8 @@ document.addEventListener('DOMContentLoaded', function() {
             currentClient = lastSelectedClient;
             
             // Selecteer in dropdown als het een standaard klant is
-            if (Array.from(clientDropdown.options).some(option => option.value === lastSelectedClient)) {
-                clientDropdown.value = lastSelectedClient;
+            if (Array.from(clientDropdown.options).some(option => option.value === lastSelectedClient.toLowerCase())) {
+                clientDropdown.value = lastSelectedClient.toLowerCase();
             } else {
                 clientDropdown.value = ""; // Leeg als het een aangepaste klant is
             }
@@ -110,6 +125,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         }
+        
+        // Update de client badge
+        updateClientBadge();
     }
     
     // Functie om een nieuwe klant toe te voegen
@@ -198,6 +216,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 item.classList.remove('active');
             }
         });
+        
+        // Update de client badge met de geselecteerde klantnaam
+        updateClientBadge();
         
         // Laad de data voor deze klant
         loadClientData(clientName);

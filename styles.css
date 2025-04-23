@@ -258,11 +258,51 @@ header {
     height: auto;
 }
 
+/* Client Badge Styles */
+.client-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--light-blurple);
+    color: var(--primary-color);
+    padding: 8px 16px;
+    border-radius: 20px;
+    margin: 15px auto 25px;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(78, 76, 236, 0.15);
+    transition: var(--transition);
+    font-size: 17px;
+    border: 1px solid rgba(78, 76, 236, 0.2);
+    max-width: 80%;
+    text-align: center;
+}
+
+.client-badge i {
+    margin-right: 8px;
+    font-size: 18px;
+}
+
+.client-badge.empty {
+    background-color: var(--light-grey);
+    color: var(--text-light);
+    border: 1px dashed var(--medium-grey);
+}
+
+.client-badge.no-client {
+    color: var(--secondary-color);
+    background-color: var(--light-coral);
+    border: 1px solid rgba(255, 96, 96, 0.3);
+}
+
+.client-badge.no-client i {
+    color: var(--secondary-color);
+}
+
 .tagline {
     color: var(--text-light);
     font-size: 18px;
     font-weight: 500;
-    margin-top: 30px;
+    margin-top: 20px;
     margin-bottom: 10px;
 }
 
@@ -492,6 +532,11 @@ footer {
     .client-selector, .client-add, .client-list {
         margin-bottom: 20px;
     }
+    
+    .client-badge {
+        font-size: 15px;
+        padding: 6px 12px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -529,5 +574,11 @@ footer {
     
     .input-group {
         flex-direction: column;
+    }
+    
+    .client-badge {
+        font-size: 14px;
+        padding: 5px 10px;
+        margin: 10px auto 20px;
     }
 } 
