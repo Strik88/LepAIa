@@ -1,59 +1,85 @@
-# Company Profile Web Application
+# Perplexity Research Tool
 
-A simple web application for entering and saving company profile information.
+A powerful local tool that transforms your research experience with the Perplexity API.
+
+## How to Use
+
+### Step 1: Obtain a Perplexity API Key
+
+1. Visit the [Perplexity website](https://www.perplexity.ai/)
+2. Create an account or log in with your existing credentials
+3. Navigate to your account settings
+4. Find the API section and generate your unique API key
+5. Copy this key for use in the next steps
+
+### Step 2: Launch the Research Tool
+
+1. Double-click the `index.html` file in your local folder
+2. The research interface opens in your default browser, ready for use
+
+### Step 3: Configure Your Settings
+
+1. Click the "SETTINGS" button in the top-right corner
+2. Paste your Perplexity API key in the designated field
+3. Select your preferred model from the dropdown options:
+   - **Sonar** - Our standard model delivering speed and efficiency
+   - **Sonar Pro** - Enhanced search capabilities for complex inquiries
+   - **Sonar Medium** - Balanced performance for most research needs
+   - **Sonar Small** - Rapid responses for straightforward questions
+   - **Sonar Reasoning** - Superior reasoning for analytical research
+   - **Sonar Reasoning Pro** - Advanced reasoning with comprehensive analysis
+4. Click "SAVE SETTINGS" to store your preferences
+
+### Step 4: Conduct Your Research
+
+You have two ways to conduct research:
+
+#### Option 1: Company Research
+1. Select a company from the sidebar on the left
+2. Click "RESEARCH SELECTED COMPANY" to generate a comprehensive profile
+3. Review the detailed company information in the results panel
+
+#### Option 2: Custom Research
+1. Type your research question in the main input field
+2. Click "START YOUR RESEARCH" to begin the discovery process
+3. Review your detailed results in the panel below
 
 ## Features
 
-- Clean, responsive user interface
-- Form for entering company profile information
-- Data saved locally in the browser
-- Easy to host on GitHub Pages
+### Company Research
+The tool includes a specialized company research feature that automatically:
+- Identifies company activities and revenue streams
+- Discovers mission, vision, and core values
+- Maps organizational and legal structure
+- Lists products, services, and differentiators
+- Analyzes revenue models and pricing strategies
+- Provides employee and location information
+- Identifies key leadership and decision-makers
+- Highlights culture, news, and recent developments
 
-## How to Host on GitHub Pages
+### Professional Markdown Formatting
 
-Follow these simple steps to host this website on GitHub Pages:
+All research results display in beautifully formatted Markdown, providing:
 
-### Step 1: Create a GitHub repository
+- Clear hierarchical headings
+- Well-structured lists
+- Highlighted code blocks for technical content
+- Clickable reference links
+- Formatted tables for organized data
+- Stylized quotes and emphasis
 
-1. Go to [GitHub](https://github.com) and log in to your account
-2. Click the "+" icon in the top right corner and select "New repository"
-3. Name your repository (for example, "company-profile")
-4. Make sure the repository is set to "Public"
-5. Click "Create repository"
+This professional formatting makes your research results immediately actionable and easy to analyze.
 
-### Step 2: Upload these files to your repository
+### Secure Settings Storage
 
-Option 1: Using the GitHub website
-1. In your new repository, click the "Add file" button and select "Upload files"
-2. Drag and drop all the files from this folder (index.html, styles.css, script.js, README.md)
-3. Click "Commit changes"
+Your API key and model preferences are securely stored in your browser's local storage, eliminating the need to reconfigure settings for each research session.
 
-Option 2: Using Git (if you're familiar with it)
-1. Open a terminal or command prompt
-2. Navigate to the folder containing these files
-3. Run the following commands (replace "yourusername" and "company-profile" with your GitHub username and repository name):
-```
-git init
-git add .
-git commit -m "Initial commit"
-git remote add origin https://github.com/yourusername/company-profile.git
-git push -u origin master
-```
+## Technical Architecture
 
-### Step 3: Enable GitHub Pages
+This research tool leverages:
+- HTML for structured interface design
+- CSS for professional visual styling
+- JavaScript for seamless API integration
+- Marked.js for rendering professional Markdown
 
-1. Go to your repository on GitHub
-2. Click on "Settings" (tab near the top of the page)
-3. Scroll down to the "GitHub Pages" section
-4. Under "Source", select "master branch"
-5. Click "Save"
-6. After a few minutes, your site will be available at the URL shown (typically https://yourusername.github.io/company-profile/)
-
-## Using the Application
-
-1. Open the website in your browser
-2. Fill in the company profile information in the form fields
-3. Click the "Save" button to save your data
-4. Your data will be stored locally in your browser and will be available when you visit the page again
-
-Note: The data is saved using browser localStorage, which means it's only stored on the device you're using. It won't be accessible from other devices or browsers. 
+All processing occurs locally in your browser, ensuring your research remains private and secure. Your API key remains in your local storage and is only used for direct API requests to Perplexity. 

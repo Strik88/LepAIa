@@ -104,13 +104,11 @@ Structure the output clearly, perhaps grouping the answers per identified workpl
     let currentCompanyName = '';
 
     // Select elements
-    const companyItemsContainer = document.querySelector('.company-list'); // Changed selector target
-    const selectedCompanyNameDisplay = document.getElementById('selected-company-name-display'); 
-    const newCompanyNameInput = document.getElementById('new-company-name'); // Added
-    const addCompanyBtn = document.getElementById('add-company-btn');       // Added
+    const companyItems = document.querySelectorAll('.company-item');
     const resultsModal = document.getElementById('results-modal'); // Renamed for clarity
     const closeResultsModal = resultsModal.querySelector('.close-modal'); // Specific close button
     const resultsDiv = document.getElementById('results');
+    const selectedCompanyNameDisplay = document.getElementById('selected-company-name-display'); // Added
     
     // Settings elements
     const settingsBtn = document.querySelector('.settings-button');
@@ -135,28 +133,23 @@ Structure the output clearly, perhaps grouping the answers per identified workpl
     }
     
     // -- Initial Setup --
-    // Get initial company items *after* potential dynamic additions (though here it's before)
-    const initialCompanyItems = companyItemsContainer ? companyItemsContainer.querySelectorAll('.company-item') : [];
-    if (initialCompanyItems.length > 0) {
-        initialCompanyItems[0].classList.add('selected');
-        currentCompanyName = initialCompanyItems[0].getAttribute('data-company');
-        updateSelectedCompanyNameDisplay(currentCompanyName);
+    if (companyItems.length > 0) {
+        companyItems[0].classList.add('selected');
+        currentCompanyName = companyItems[0].getAttribute('data-company');
+        updateSelectedCompanyNameDisplay(currentCompanyName); // Update display initially
     } else {
-        updateSelectedCompanyNameDisplay('No Company Selected');
+        updateSelectedCompanyNameDisplay('No Company Selected'); // Handle case with no companies
     }
     initializeFieldsForCompany(currentCompanyName);
     loadSettings();
 
     // -- Event Listeners --
 
-    // Company Selection using Event Delegation
-    if (companyItemsContainer) {
-        companyItemsContainer.addEventListener('click', function(event) {
-            const companyItem = event.target.closest('.company-item'); // Find clicked company item
-            if (!companyItem) return; // Exit if click wasn't on a company item
-
-            const newCompanyName = companyItem.getAttribute('data-company');
-            if (newCompanyName === currentCompanyName) return; 
+    // Company Selection
+    companyItems.forEach(item => {
+        item.addEventListener('click', function() {
+            const newCompanyName = this.getAttribute('data-company');
+            if (newCompanyName === currentCompanyName) return;
 
             // Auto-save edits for the *previous* company
             for (const fieldType of fieldTypes) {
@@ -168,15 +161,13 @@ Structure the output clearly, perhaps grouping the answers per identified workpl
 
             // Switch company
             currentCompanyName = newCompanyName;
-            updateSelectedCompanyNameDisplay(currentCompanyName); 
-            // Remove selected class from all items within the container
-            companyItemsContainer.querySelectorAll('.company-item').forEach(i => i.classList.remove('selected'));
-            // Add selected class to the clicked item
-            companyItem.classList.add('selected');
+            updateSelectedCompanyNameDisplay(currentCompanyName); // Update display on change
+            companyItems.forEach(i => i.classList.remove('selected'));
+            this.classList.add('selected');
             
             initializeFieldsForCompany(currentCompanyName);
         });
-    }
+    });
     
     // Close Results Modal
     if (closeResultsModal) {
@@ -258,48 +249,6 @@ Structure the output clearly, perhaps grouping the answers per identified workpl
                     generateContentForField(fieldType);
                 }
             }
-        });
-    }
-
-    // Add Company Button
-    if (addCompanyBtn && newCompanyNameInput && companyItemsContainer) {
-        addCompanyBtn.addEventListener('click', function() {
-            const newName = newCompanyNameInput.value.trim();
-            if (newName === '') {
-                alert('Please enter a company name.');
-                return;
-            }
-            
-            // Optional: Check if company already exists (case-insensitive)
-            const existingItems = companyItemsContainer.querySelectorAll('.company-item');
-            let exists = false;
-            existingItems.forEach(item => {
-                if (item.getAttribute('data-company').toLowerCase() === newName.toLowerCase()) {
-                    exists = true;
-                }
-            });
-            if (exists) {
-                alert(`Company '${newName}' already exists.`);
-                return;
-            }
-
-            // Create new company item element
-            const newItem = document.createElement('div');
-            newItem.classList.add('company-item');
-            newItem.setAttribute('data-company', newName);
-            newItem.innerHTML = `
-                <div class="company-name">${newName}</div>
-                <div class="company-description">New Company</div> <!-- Default description -->
-            `;
-
-            // Append to the list
-            companyItemsContainer.appendChild(newItem);
-
-            // Clear input field
-            newCompanyNameInput.value = '';
-
-            // Optional: Automatically select the new company
-            // newItem.click(); // Simulate a click to trigger selection logic
         });
     }
 

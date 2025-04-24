@@ -215,11 +215,6 @@
             <div class="settings-link">
                 <a href="#" class="settings-button"><i class="fas fa-cog"></i> Settings</a>
             </div>
-            <!-- Add Company Section -->
-            <div class="add-company-section">
-                 <input type="text" id="new-company-name" placeholder="New company name...">
-                 <button id="add-company-btn" class="add-company-button"><i class="fas fa-plus"></i> Add</button>
-            </div>
         </div>
         
         <!-- Results Modal -->
