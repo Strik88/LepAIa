@@ -1,0 +1,787 @@
+/* Import Lato and Lora fonts */
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700&family=Lora:wght@400;500;600&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Lato', sans-serif;
+}
+
+body {
+    background-color: #F6F6FE; /* Neutral 50 */
+    padding: 0;
+    color: #2C3138; /* Charcoal for text */
+    min-height: 100vh;
+}
+
+/* Page Layout */
+.page-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
+    min-height: 100vh;
+    position: relative;
+}
+
+.main-content {
+    padding: 30px;
+    grid-row: 1;
+    overflow-y: auto;
+}
+
+.company-profile {
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+    padding: 30px;
+}
+
+/* Company selector */
+.company-selector {
+    background-color: white;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+    padding: 20px 30px;
+    grid-row: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.company-selector h3 {
+    margin-bottom: 0;
+    font-size: 18px;
+    color: #4E4CEC; /* Blurple */
+}
+
+.company-list {
+    display: flex;
+    gap: 15px;
+    margin: 0 20px;
+    flex-grow: 1;
+    max-width: 700px;
+}
+
+.company-item {
+    padding: 12px 15px;
+    border-radius: 6px;
+    border: 1px solid #EFEFEF;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex: 1;
+    max-width: 200px;
+}
+
+.company-item:hover {
+    background-color: #F6F6FE; /* Neutral 50 */
+    transform: translateY(-2px);
+}
+
+.company-item.selected {
+    background-color: #CAD5FF; /* Light Blurple */
+    border-color: #4E4CEC; /* Blurple */
+    position: relative;
+}
+
+.company-item.selected::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #CAD5FF;
+}
+
+.company-name {
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.company-description {
+    font-size: 13px;
+    color: #192F4D; /* Navy */
+}
+
+.settings-link {
+    margin-left: auto;
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    border-bottom: 1px solid #EFEFEF;
+    margin-bottom: 25px;
+    margin-top: 15px;
+}
+
+.tab {
+    padding: 12px 20px;
+    margin-right: 5px;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    font-weight: 600;
+    color: #C0C0C0; /* Medium Grey */
+    transition: all 0.2s ease;
+}
+
+.tab.active {
+    color: #4E4CEC; /* Blurple */
+    border-bottom: 2px solid #4E4CEC;
+}
+
+.tab i {
+    margin-right: 8px;
+}
+
+/* Intro section */
+.intro-section {
+    margin-bottom: 30px;
+}
+
+.intro-section h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #2C3138; /* Charcoal */
+}
+
+.intro-section p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #192F4D; /* Navy */
+    max-width: 90%;
+}
+
+/* Profile form */
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 35px; /* Increased gap between sections */
+}
+
+.form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-section h3 {
+    font-size: 20px;
+    color: #4E4CEC; /* Blurple */
+    font-weight: 600;
+    margin-bottom: 5px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #EFEFEF; /* Add a separator line */
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-field label {
+    font-weight: 600;
+    font-size: 15px;
+    color: #2C3138; /* Charcoal */
+    margin-bottom: 5px; /* Added margin */
+}
+
+.input-group {
+    display: flex;
+    align-items: flex-start; /* Align items to the top */
+    gap: 15px;
+}
+
+/* Output Div and Input Textarea common styles */
+.markdown-output,
+.markdown-input {
+    flex-grow: 1;
+    min-height: 180px; /* Match original textarea height */
+    padding: 15px;
+    border: 1px solid #EFEFEF;
+    border-radius: 8px;
+    font-size: 15px;
+    background-color: #F6F6F6; /* Silver Grey */
+    color: #2C3138; /* Charcoal */
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+    line-height: 1.6; /* Improve readability */
+}
+
+/* Specifics for Output Div */
+.markdown-output {
+    height: auto; /* Allow div to grow */
+    overflow-y: auto; /* Add scroll if content overflows */
+    resize: vertical; /* Make the output div vertically resizable */
+}
+
+/* Specifics for Input Textarea */
+.markdown-input {
+    height: 180px; /* Initial height, can be resized */
+    resize: vertical; /* Allow vertical resizing */
+    font-family: monospace; /* Optional: Use monospace for raw markdown */
+}
+
+/* Placeholder styling for the output div */
+.markdown-output:empty::before {
+    content: attr(placeholder);
+    color: #C0C0C0; /* Medium Grey for placeholder */
+    font-style: italic;
+}
+
+/* Styling for loading/error states inside the div */
+.markdown-output.loading,
+.markdown-output.error {
+    font-style: italic;
+    color: #4E4CEC; /* Blurple for loading */
+}
+
+.markdown-output.error {
+    color: #FF6060; /* Coral for errors */
+}
+
+/* Remove focus styles from the div as it's not editable */
+.markdown-output:focus {
+    outline: none;
+    border-color: #EFEFEF; 
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05); 
+}
+
+.input-group textarea { 
+    /* Keep old textarea styles commented out or remove if no longer needed */
+    /* These styles are now handled by .markdown-input */
+    /* ... */
+}
+
+.input-group textarea:focus {
+    /* Keep old textarea styles commented out or remove if no longer needed */
+    /* Focus styles for .markdown-input are default or can be added if needed */
+    /* ... */
+}
+
+/* Button Stack for Generate/Edit buttons */
+.button-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch; /* Make buttons same width */
+    margin-top: 27px; /* Align with label */
+    align-self: flex-start;
+}
+
+/* Generate buttons adjustments */
+.generate-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    gap: 8px;
+    background: linear-gradient(135deg, #4E4CEC 0%, #6A68FF 100%);
+    color: white;
+    border: none;
+    padding: 0 18px; 
+    border-radius: 8px; 
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(78, 76, 236, 0.2); 
+    white-space: nowrap;
+    /* min-width removed to allow alignment in stack */
+    height: 40px; /* Slightly reduced height for stack */
+    /* align-self and margin-top moved to .button-stack */
+}
+
+.generate-btn:hover {
+    background: linear-gradient(135deg, #3A38CB 0%, #5856E8 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(78, 76, 236, 0.25); 
+}
+
+/* Edit/Save Button Styles */
+.edit-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #6c757d 0%, #495057 100%); /* Grey gradient */
+    color: white;
+    border: none;
+    padding: 0 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(108, 117, 125, 0.2);
+    white-space: nowrap;
+    height: 40px; /* Match generate button height */
+}
+
+.edit-btn:hover {
+    background: linear-gradient(135deg, #5a6268 0%, #343a40 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(108, 117, 125, 0.25);
+}
+
+/* Style for Save mode */
+.edit-btn[data-mode="save"] {
+    background: linear-gradient(135deg, #28a745 0%, #218838 100%); /* Green gradient */
+    box-shadow: 0 4px 10px rgba(40, 167, 69, 0.2);
+}
+
+.edit-btn[data-mode="save"]:hover {
+    background: linear-gradient(135deg, #218838 0%, #1e7e34 100%); 
+    box-shadow: 0 6px 15px rgba(40, 167, 69, 0.25);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px; /* Increased margin */
+    padding-top: 25px; /* Increased padding */
+    border-top: 1px solid #EFEFEF;
+}
+
+.generate-all-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #FF6060 0%, #FF8080 100%);
+    color: white;
+    border: none;
+    padding: 14px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 96, 96, 0.3);
+    max-width: 350px; /* Increased max-width */
+}
+
+.generate-all-btn:hover {
+    background: linear-gradient(135deg, #E55555 0%, #FF6060 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 96, 96, 0.35);
+}
+
+.generate-all-btn .btn-icon {
+    font-size: 20px;
+}
+
+/* Settings Modal specific styles */
+.settings-modal-content {
+    max-width: 500px; /* Smaller modal for settings */
+}
+
+.settings-modal-content h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #4E4CEC; /* Blurple */
+}
+
+.settings-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.settings-form .form-field small {
+    font-size: 12px;
+    color: #192F4D; /* Navy */
+    margin-top: 5px;
+}
+
+.settings-form input[type="password"],
+.settings-form select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #EFEFEF;
+    border-radius: 6px;
+    font-size: 15px;
+    background-color: #F6F6F6; /* Silver Grey */
+    color: #2C3138; /* Charcoal */
+}
+
+.settings-form input[type="password"]:focus,
+.settings-form select:focus {
+    outline: none;
+    border-color: #CAD5FF; /* Light Blurple */
+    box-shadow: 0 0 0 3px rgba(78, 76, 236, 0.1);
+}
+
+.settings-form select {
+    appearance: none; /* Remove default dropdown arrow */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%234E4CEC' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 12px;
+    padding-right: 40px; /* Space for custom arrow */
+}
+
+/* Styles for Prompt Textareas in Settings */
+.settings-form .prompt-textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #EFEFEF;
+    border-radius: 6px;
+    font-size: 14px; /* Slightly smaller for prompts */
+    background-color: #F6F6F6;
+    color: #2C3138;
+    resize: vertical;
+    min-height: 100px; /* Ensure decent minimum height */
+    font-family: monospace; /* Good for seeing placeholders */
+    line-height: 1.5;
+}
+
+.settings-form .prompt-textarea:focus {
+    outline: none;
+    border-color: #CAD5FF;
+    box-shadow: 0 0 0 3px rgba(78, 76, 236, 0.1);
+}
+
+/* Style for code tag in instructions */
+.settings-form small code {
+    background-color: #e9ecef; /* Light grey background */
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: monospace;
+    font-size: 11px; /* Smaller code font */
+}
+
+.settings-actions {
+    border-top: none; /* Remove border if inherited */
+    padding-top: 10px; /* Adjust padding */
+    margin-top: 10px;
+}
+
+.settings-save-btn {
+    background: linear-gradient(135deg, #4E4CEC 0%, #6A68FF 100%);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    width: 100%; /* Make button full width */
+    box-shadow: 0 4px 10px rgba(78, 76, 236, 0.2);
+}
+
+.settings-save-btn:hover {
+    background: linear-gradient(135deg, #3A38CB 0%, #5856E8 100%);
+    box-shadow: 0 6px 15px rgba(78, 76, 236, 0.25);
+    transform: translateY(-1px);
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    color: #C0C0C0;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.close-modal:hover {
+    color: #FF6060; /* Coral */
+}
+
+/* Results */
+.results {
+    background-color: white;
+    border-radius: 5px;
+    padding: 20px;
+    min-height: 200px;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+/* Other elements */
+
+/* Updated Header Styles */
+.main-header {
+    text-align: center;
+    margin-bottom: 20px; /* Space below header */
+}
+
+.main-header h1 {
+    color: #4E4CEC; /* Blurple for headings */
+    margin-bottom: 5px; /* Reduced space below main title */
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 1.2; /* Adjusted line height */
+    letter-spacing: 0.5px;
+}
+
+.main-header .highlight {
+    font-family: 'Lora', serif;
+    font-weight: 600;
+}
+
+#selected-company-name-display {
+    font-size: 18px;
+    color: #FF6060; /* Coral color for company name */
+    font-weight: 600;
+    margin-top: 0;
+}
+/* End Updated Header Styles */
+
+h1 { 
+    /* Old H1 styles are now mostly covered by .main-header h1 */
+    /* text-align: center; */
+    /* color: #4E4CEC; */ 
+    /* ... other properties if any specific to only old H1 needed removal ... */
+}
+
+.highlight {
+     /* Old highlight styles are now mostly covered by .main-header .highlight */
+}
+
+.settings-button {
+    background-color: #4E4CEC; /* Blurple */
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+    font-weight: 600;
+}
+
+.settings-button:hover {
+    background-color: #3A38CB; /* Darker Blurple for hover */
+}
+
+.placeholder {
+    color: #C0C0C0; /* Medium Grey */
+    font-style: italic;
+    font-weight: 400;
+    text-align: center;
+    padding: 20px;
+}
+
+.error {
+    color: #FF6060; /* Coral for errors */
+    margin-top: 10px;
+    font-weight: 500;
+}
+
+.loading {
+    text-align: center;
+    margin: 20px 0;
+    color: #4E4CEC; /* Blurple */
+    font-weight: 500;
+}
+
+/* Markdown styling */
+.markdown-content {
+    font-family: 'Lato', sans-serif;
+    line-height: 1.6;
+    color: #2C3138; /* Charcoal */
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4,
+.markdown-content h5,
+.markdown-content h6 {
+    margin-top: 24px;
+    margin-bottom: 16px;
+    font-weight: 700;
+    line-height: 1.25;
+    color: #4E4CEC; /* Blurple for headings */
+}
+
+.markdown-content h1 {
+    font-size: 28px;
+    border-bottom: 1px solid #EFEFEF; /* Light Grey */
+    padding-bottom: 0.3em;
+}
+
+.markdown-content h2 {
+    font-size: 23px;
+    border-bottom: 1px solid #EFEFEF; /* Light Grey */
+    padding-bottom: 0.3em;
+}
+
+.markdown-content h3 {
+    font-size: 18px;
+}
+
+.markdown-content p, 
+.markdown-content ul, 
+.markdown-content ol {
+    margin-bottom: 16px;
+    font-weight: 400;
+}
+
+.markdown-content ul, 
+.markdown-content ol {
+    padding-left: 2em;
+}
+
+.markdown-content li {
+    margin-bottom: 4px;
+}
+
+.markdown-content a {
+    color: #4E4CEC; /* Blurple */
+    text-decoration: none;
+}
+
+.markdown-content a:hover {
+    text-decoration: underline;
+}
+
+.markdown-content blockquote {
+    padding: 0 1em;
+    color: #192F4D; /* Navy */
+    border-left: 0.25em solid #CAD5FF; /* Light Blurple */
+    margin: 0 0 16px 0;
+    font-family: 'Lora', serif;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 28px;
+}
+
+.markdown-content pre {
+    padding: 16px;
+    overflow: auto;
+    font-size: 14px;
+    line-height: 1.45;
+    background-color: #F6F6FE; /* Neutral 50 */
+    border-radius: 3px;
+    margin-bottom: 16px;
+}
+
+.markdown-content code {
+    padding: 0.2em 0.4em;
+    margin: 0;
+    font-size: 14px;
+    background-color: #F6F6FE; /* Neutral 50 */
+    border-radius: 3px;
+}
+
+.markdown-content pre code {
+    padding: 0;
+    background-color: transparent;
+}
+
+.markdown-content img {
+    max-width: 100%;
+}
+
+.markdown-content table {
+    display: block;
+    width: 100%;
+    overflow: auto;
+    margin-bottom: 16px;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+.markdown-content table th,
+.markdown-content table td {
+    padding: 6px 13px;
+    border: 1px solid #EFEFEF; /* Light Grey */
+}
+
+.markdown-content table th {
+    font-weight: 600;
+    background-color: #F6F6FE; /* Neutral 50 */
+}
+
+.markdown-content table tr {
+    background-color: #fff;
+    border-top: 1px solid #EFEFEF; /* Light Grey */
+}
+
+.markdown-content table tr:nth-child(2n) {
+    background-color: #F6F6F6; /* Silver Grey */
+}
+
+/* Responsive styles */
+@media (max-width: 900px) {
+    .input-group {
+        flex-direction: column;
+    }
+    
+    .generate-btn {
+        width: 100%;
+        justify-content: center;
+        margin-top: 10px; /* Adjust margin for column layout */
+        align-self: stretch; /* Stretch to full width */
+    }
+    
+    .company-selector {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+    
+    .company-list {
+        flex-wrap: wrap;
+        margin: 0;
+    }
+    
+    .company-item {
+        max-width: none;
+    }
+    
+    .settings-link {
+        margin-left: 0;
+        align-self: flex-end;
+    }
+} 
+
+/* Add company styles */
+.add-company{
+ display:flex;gap:10px;margin-top:10px}
+.add-company input{padding:8px;border:1px solid #ccc;border-radius:4px;font-size:14px}
+.add-company-btn{background:#28a745;color:#fff;border:none;padding:8px 12px;border-radius:4px;cursor:pointer}
+.add-company-btn:hover{background:#218838} 
