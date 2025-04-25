@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,4 +36,43 @@
     </div>
     <script src="settings.js"></script>
 </body>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Perplexity Research Tool</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1><span class="highlight">Configure</span> Settings</h1>
+        <div class="form-container">
+            <form id="settingsForm">
+                <div class="form-group">
+                    <label for="apiKey">PERPLEXITY API KEY</label>
+                    <input type="password" id="apiKey" placeholder="Enter your Perplexity API key" required>
+                </div>
+                <div class="form-group">
+                    <label for="modelSelect">MODEL SELECTION</label>
+                    <select id="modelSelect" required>
+                        <option value="sonar">Sonar (standard)</option>
+                        <option value="sonar-pro">Sonar Pro (advanced search)</option>
+                        <option value="sonar-medium">Sonar Medium</option>
+                        <option value="sonar-small">Sonar Small</option>
+                        <option value="sonar-reasoning">Sonar Reasoning</option>
+                        <option value="sonar-reasoning-pro">Sonar Reasoning Pro</option>
+                    </select>
+                </div>
+                <button type="submit">SAVE SETTINGS</button>
+            </form>
+        </div>
+        <div class="navigation">
+            <a href="index.html" class="back-button">BACK TO RESEARCH</a>
+        </div>
+    </div>
+    <script src="settings.js"></script>
+</body>
+>>>>>>> d79afc81042dbffff33107f81e4bfb301b7b6c46
 </html> 
