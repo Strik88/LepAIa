@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Company profile generator">
+    <title>Company Profile Tool</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div class="page-container">
+        <div class="main-content">
+            <div class="company-profile">
+                <div class="main-header">
+                    <h1>Lepaya <span class="highlight">Portal</span></h1>
+                    <p id="selected-company-name-display" class="selected-company-display"></p>
+                </div>
+                
+                <div class="tabs">
+                    <div class="tab active"><i class="fas fa-building"></i> Profile</div>
+                    <div class="tab"><i class="fas fa-file-alt"></i> Files</div>
+                </div>
+                
+                <div class="intro-section">
+                    <h2>Generate Company Profile</h2>
+                    <p>Provide detailed information about your organization to generate a comprehensive profile, industry analysis, and market insights.</p>
+                </div>
+                
+                <div class="profile-form">
+                    <!-- Full Report Section -->
+                    <div class="form-section">
+                        <h3>Full Company Report</h3>
+                        <div class="form-field">
+                            <label>Complete Company Profile</label>
+                            <div class="input-group">
+                                <div id="full-report-output" class="markdown-output" placeholder="Your comprehensive company report will appear here..."></div>
+                                <textarea id="full-report-input" class="markdown-input" style="display: none;"></textarea>
+                                <div class="button-stack">
+                                    <button id="generate-full-report" class="generate-btn">
+                                        <span class="btn-icon"><i class="fas fa-robot"></i></span>
+                                        <span>Generate</span>
+                                    </button>
+                                    <button id="edit-full-report" class="edit-btn" data-mode="edit">
+                                        <span class="btn-icon"><i class="fas fa-pencil-alt"></i></span>
+                                        <span>Edit</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Industry Section -->
+                    <div class="form-section">
+                        <h3>Industry Analysis</h3>
+                        <div class="form-field">
+                            <label>Industry Analysis</label>
+                            <div class="input-group">
+                                <div id="industry-output" class="markdown-output" placeholder="Industry analysis will appear here..."></div>
+                                <textarea id="industry-input" class="markdown-input" style="display: none;"></textarea>
+                                <div class="button-stack">
+                                    <button id="generate-industry" class="generate-btn">
+                                        <span class="btn-icon"><i class="fas fa-industry"></i></span>
+                                        <span>Generate</span>
+                                    </button>
+                                    <button id="edit-industry" class="edit-btn" data-mode="edit">
+                                        <span class="btn-icon"><i class="fas fa-pencil-alt"></i></span>
+                                        <span>Edit</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Challenges Section -->
+                    <div class="form-section">
+                        <h3>Challenges</h3>
+                        <div class="form-field">
+                            <label>Analysis of Challenges</label>
+                            <div class="input-group">
+                                <div id="challenges-output" class="markdown-output" placeholder="Analysis of challenges will appear here..."></div>
+                                <textarea id="challenges-input" class="markdown-input" style="display: none;"></textarea>
+                                <div class="button-stack">
+                                    <button id="generate-challenges" class="generate-btn">
+                                        <span class="btn-icon"><i class="fas fa-exclamation-triangle"></i></span>
+                                        <span>Generate</span>
+                                    </button>
+                                    <button id="edit-challenges" class="edit-btn" data-mode="edit">
+                                        <span class="btn-icon"><i class="fas fa-pencil-alt"></i></span>
+                                        <span>Edit</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Strategic Priorities Section -->
+                    <div class="form-section">
+                        <h3>Strategic Priorities</h3>
+                        <div class="form-field">
+                            <label>Outline of Strategic Priorities</label>
+                            <div class="input-group">
+                                <div id="strategic-priorities-output" class="markdown-output" placeholder="Strategic priorities will appear here..."></div>
+                                <textarea id="strategic-priorities-input" class="markdown-input" style="display: none;"></textarea>
+                                <div class="button-stack">
+                                    <button id="generate-strategic-priorities" class="generate-btn">
+                                        <span class="btn-icon"><i class="fas fa-bullseye"></i></span>
+                                        <span>Generate</span>
+                                    </button>
+                                    <button id="edit-strategic-priorities" class="edit-btn" data-mode="edit">
+                                        <span class="btn-icon"><i class="fas fa-pencil-alt"></i></span>
+                                        <span>Edit</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Additional Information Section -->
+                    <div class="form-section">
+                        <h3>Additional Information</h3>
+                        <div class="form-field">
+                            <label>Context and Unique Characteristics</label>
+                            <div class="input-group">
+                                <div id="additional-info-output" class="markdown-output" placeholder="Additional information will appear here..."></div>
+                                <textarea id="additional-info-input" class="markdown-input" style="display: none;"></textarea>
+                                <div class="button-stack">
+                                    <button id="generate-additional-info" class="generate-btn">
+                                        <span class="btn-icon"><i class="fas fa-info-circle"></i></span>
+                                        <span>Generate</span>
+                                    </button>
+                                    <button id="edit-additional-info" class="edit-btn" data-mode="edit">
+                                        <span class="btn-icon"><i class="fas fa-pencil-alt"></i></span>
+                                        <span>Edit</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Relevant Links Section -->
+                    <div class="form-section">
+                        <h3>Relevant Links</h3>
+                        <div class="form-field">
+                            <label>Essential Resources and Links</label>
+                            <div class="input-group">
+                                <div id="relevant-links-output" class="markdown-output" placeholder="Relevant links will appear here..."></div>
+                                <textarea id="relevant-links-input" class="markdown-input" style="display: none;"></textarea>
+                                <div class="button-stack">
+                                    <button id="generate-relevant-links" class="generate-btn">
+                                        <span class="btn-icon"><i class="fas fa-link"></i></span>
+                                        <span>Generate</span>
+                                    </button>
+                                    <button id="edit-relevant-links" class="edit-btn" data-mode="edit">
+                                        <span class="btn-icon"><i class="fas fa-pencil-alt"></i></span>
+                                        <span>Edit</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Workplace Needs Section -->
+                    <div class="form-section">
+                        <h3>Workplace Needs Analysis</h3>
+                        <div class="form-field">
+                            <label>Identified Needs and Target Audiences</label>
+                            <div class="input-group">
+                                <div id="workplace-needs-output" class="markdown-output" placeholder="Workplace needs analysis will appear here..."></div>
+                                <textarea id="workplace-needs-input" class="markdown-input" style="display: none;"></textarea>
+                                <div class="button-stack">
+                                    <button id="generate-workplace-needs" class="generate-btn">
+                                        <span class="btn-icon"><i class="fas fa-users-cog"></i></span>
+                                        <span>Generate</span>
+                                    </button>
+                                    <button id="edit-workplace-needs" class="edit-btn" data-mode="edit">
+                                        <span class="btn-icon"><i class="fas fa-pencil-alt"></i></span>
+                                        <span>Edit</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <small>Note: Requires other sections (except Additional Info & Links) to be filled before generating.</small>
+                        </div>
+                    </div>
+                    
+                    <!-- Generate All button -->
+                    <div class="form-actions">
+                        <button id="generate-all" class="generate-all-btn">
+                            <span class="btn-icon"><i class="fas fa-magic"></i></span>
+                            <span>Generate All Sections</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Company Selector -->
+        <div class="company-selector">
+            <h3>Select Company:</h3>
+            <div class="company-list">
+                <div class="company-item" data-company="Lepaya">
+                    <div class="company-name">Lepaya</div>
+                    <div class="company-description">Learning & Development</div>
+                </div>
+                <div class="company-item" data-company="PwC">
+                    <div class="company-name">PwC</div>
+                    <div class="company-description">Professional Services</div>
+                </div>
+                <div class="company-item" data-company="Workrate">
+                    <div class="company-name">Workrate</div>
+                    <div class="company-description">Workforce Analytics</div>
+                </div>
+            </div>
+            <div class="settings-link">
+                <a href="#" class="settings-button"><i class="fas fa-cog"></i> Settings</a>
+            </div>
+            <!-- New Add Company Section -->
+            <div class="add-company">
+                <input type="text" id="new-company-name" placeholder="New company name" />
+                <input type="text" id="new-company-description" placeholder="Description" />
+                <button id="add-company-btn" class="add-company-btn"><i class="fas fa-plus"></i> Add</button>
+            </div>
+            <!-- End Add Company Section -->
+        </div>
+        
+        <!-- Results Modal -->
+        <div class="modal" id="results-modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <div id="results">
+                    <p class="placeholder">Your research findings will appear here...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settings-modal">
+        <div class="modal-content settings-modal-content">
+            <span class="close-modal close-settings-modal">&times;</span>
+            <h2>Settings</h2>
+            <div class="settings-form">
+                <div class="form-field">
+                    <label for="api-key-input">Perplexity API Key</label>
+                    <input type="password" id="api-key-input" placeholder="Enter your API key">
+                    <small>Your API key is stored locally in your browser.</small>
+                </div>
+                <div class="form-field">
+                    <label for="model-select">Select Model</label>
+                    <select id="model-select">
+                        <option value="sonar-pro">Sonar Pro (Advanced Search)</option>
+                        <option value="sonar">Sonar (Lightweight Search)</option>
+                        <option value="sonar-deep-research">Sonar Deep Research</option>
+                        <option value="sonar-reasoning-pro">Sonar Reasoning Pro</option>
+                        <option value="sonar-reasoning">Sonar Reasoning (Fast)</option>
+                    </select>
+                </div>
+                <!-- Prompts -->
+                <div class="form-field">
+                    <label for="full-report-prompt">Full Report Prompt</label>
+                    <textarea id="full-report-prompt" class="prompt-textarea" rows="6"></textarea>
+                    <small>Use <code>{companyName}</code> placeholder.</small>
+                </div>
+                <div class="form-field">
+                    <label for="industry-prompt">Industry Analysis Prompt</label>
+                    <textarea id="industry-prompt" class="prompt-textarea" rows="6"></textarea>
+                     <small>Use <code>{companyName}</code> placeholder.</small>
+                </div>
+                <div class="form-field">
+                    <label for="challenges-prompt">Challenges Prompt</label>
+                    <textarea id="challenges-prompt" class="prompt-textarea" rows="6"></textarea>
+                    <small>Use <code>{companyName}</code> placeholder.</small>
+                </div>
+                <div class="form-field">
+                    <label for="strategic-priorities-prompt">Strategic Priorities Prompt</label>
+                    <textarea id="strategic-priorities-prompt" class="prompt-textarea" rows="6"></textarea>
+                    <small>Use <code>{companyName}</code> placeholder.</small>
+                </div>
+                <div class="form-field">
+                    <label for="additional-info-prompt">Additional Info Prompt</label>
+                    <textarea id="additional-info-prompt" class="prompt-textarea" rows="6"></textarea>
+                    <small>Use <code>{companyName}</code> placeholder.</small>
+                </div>
+                <div class="form-field">
+                    <label for="relevant-links-prompt">Relevant Links Prompt</label>
+                    <textarea id="relevant-links-prompt" class="prompt-textarea" rows="6"></textarea>
+                    <small>Use <code>{companyName}</code> placeholder.</small>
+                </div>
+                <div class="form-field">
+                    <label for="workplace-needs-prompt">Workplace Needs Prompt</label>
+                    <textarea id="workplace-needs-prompt" class="prompt-textarea" rows="6"></textarea>
+                    <small>Use <code>{companyName}</code> and <code>{context}</code> placeholders.</small>
+                </div>
+                <!-- End Prompts -->
+                <div class="form-actions settings-actions">
+                    <button id="save-settings-btn" class="settings-save-btn">Save Settings</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
