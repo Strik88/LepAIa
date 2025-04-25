@@ -1,34 +1,47 @@
 document.addEventListener('DOMContentLoaded', function() {
     // -- Default Prompts --
-    const DEFAULT_FULL_REPORT_PROMPT = `Create a comprehensive company profile for {companyName}. Include the following sections:\n\n1. Company Overview: Brief history, founding, mission, vision, and core values.\n2. Products and Services: Detailed description of main offerings.\n3. Market Position: Current market standing, market share if known, and competitive advantage.\n4. Leadership: Key executives and their backgrounds.\n5. Recent Developments: Latest news, product launches, or strategic shifts.\n6. Financial Summary: Overview of financial performance if publicly available.\n7. Future Outlook: Growth potential and strategic direction.\n\nFormat the response in clear sections with headings and bullet points where appropriate.`;
+    const DEFAULT_FULL_REPORT_PROMPT = `Create a comprehensive company profile for {companyName}. Include the following sections:\n\n1. Company Overview: Brief history, founding, mission, vision, and core values.\n2. Products and Services: Detailed description of main offerings.\n3. Market Position: Current market standing, market share if known, and competitive advantage.\n4. Leadership: Key executives and their backgrounds.\n5. Recent Developments: Latest news, product launches, or strategic shifts.\n6. Financial Summary: Overview of financial performance if publicly available.\n7. Future Outlook: Growth potential and strategic direction.\n\nFormat the response in clear sections with headings and bullet points where appropriate. End with a clear overview of all the sources mentioned including working URL hyperlinks to the sources that open in a new tab. 500 words max`;
     
-    const DEFAULT_INDUSTRY_PROMPT = `Provide a detailed industry analysis for {companyName}. Include:\n\n1. Industry Overview: Size, growth rate, and key characteristics.\n2. Competitive Landscape: Major players, market shares, and competitive dynamics.\n3. Industry Trends: Current trends, technological developments, and shifting consumer preferences.\n4. Regulatory Environment: Key regulations and compliance requirements.\n5. Challenges and Opportunities: Major challenges facing the industry and potential growth areas.\n6. Future Outlook: Predictions for the industry over the next 3-5 years.\n\nFormat the response with clear headings and bullet points where relevant.`;
+    const DEFAULT_INDUSTRY_PROMPT = `Provide a detailed industry analysis for {companyName}. Include:\n\n1. Industry Overview: Size, growth rate, and key characteristics.\n2. Competitive Landscape: Major players, market shares, and competitive dynamics.\n3. Industry Trends: Current trends, technological developments, and shifting consumer preferences.\n4. Regulatory Environment: Key regulations and compliance requirements.\n5. Challenges and Opportunities: Major challenges facing the industry and potential growth areas.\n6. Future Outlook: Predictions for the industry over the next 3-5 years.\n\nFormat the response with clear headings and bullet points where relevant. End with a clear overview of all the sources mentioned including working URL hyperlinks to the sources that open in a new tab. 500 words max`;
 
-    const DEFAULT_CHALLENGES_PROMPT = `Analyze the challenges for {companyName}. Address these points:\n\n1. What internal bottlenecks limit growth or efficiency (processes, systems, skills)?\n2. Which external industry developments pose threats or present opportunities?\n3. Which regulations must the company comply with, and where are the compliance risks?\n4. How is the company currently addressing these challenges, and where do pain points remain?`;
+    const DEFAULT_CHALLENGES_PROMPT = `Analyze the challenges for {companyName}. Address these points:\n\n1. What internal bottlenecks limit growth or efficiency (processes, systems, skills)?\n2. Which external industry developments pose threats or present opportunities?\n3. Which regulations must the company comply with, and where are the compliance risks?\n4. How is the company currently addressing these challenges, and where do pain points remain? End with a clear overview of all the sources mentioned including working URL hyperlinks to the sources that open in a new tab. 500 words max`;
 
-    const DEFAULT_STRATEGIC_PRIORITIES_PROMPT = `Outline the strategic priorities for {companyName}:\n\n1. What are the management's short- and long-term objectives?\n2. Which strategic projects and initiatives are in place to achieve these goals?\n3. Which transformation or change programs are currently underway?\n4. Which KPIs and performance metrics does the company use to measure success?`;
+    const DEFAULT_STRATEGIC_PRIORITIES_PROMPT = `Outline the strategic priorities for {companyName}:\n\n1. What are the management's short- and long-term objectives?\n2. Which strategic projects and initiatives are in place to achieve these goals?\n3. Which transformation or change programs are currently underway?\n4. Which KPIs and performance metrics does the company use to measure success? End with a clear overview of all the sources mentioned including working URL hyperlinks to the sources that open in a new tab. 500 words max`;
 
-    const DEFAULT_ADDITIONAL_INFO_PROMPT = `Provide additional context about {companyName}:\n\n1. How would you describe the company culture and core values in terms of observable behaviors?\n2. What major milestones, awards, or achievements has the company secured?\n3. Which CSR and sustainability initiatives has the company launched, and what are the outcomes?\n4. Are there any other unique stories or characteristics that strengthen the company's positioning?`;
+    const DEFAULT_ADDITIONAL_INFO_PROMPT = `Provide additional context about {companyName}:\n\n1. How would you describe the company culture and core values in terms of observable behaviors?\n2. What major milestones, awards, or achievements has the company secured?\n3. Which CSR and sustainability initiatives has the company launched, and what are the outcomes?\n4. Are there any other unique stories or characteristics that strengthen the company's positioning? End with a clear overview of all the sources mentioned including working URL hyperlinks to the sources that open in a new tab. 500 words max`;
 
-    const DEFAULT_RELEVANT_LINKS_PROMPT = `List essential internal and external resources for {companyName}:\n\n1. Which internal and external resources (reports, whitepapers, presentations) are essential?\n2. What is the brief description and relevance of each resource?\n\nProvide direct URLs where possible.`;
+    const DEFAULT_RELEVANT_LINKS_PROMPT = `List essential internal and external resources for {companyName}:\n\n1. Which internal and external resources (reports, whitepapers, presentations) are essential?\n2. What is the brief description and relevance of each resource?\n\nProvide direct URLs where possible. End with a clear overview of all the sources mentioned including working URL hyperlinks to the sources that open in a new tab. 500 words max`;
 
-    const DEFAULT_WORKPLACE_NEEDS_PROMPT = `Based on the following comprehensive context about {companyName}:
+    const DEFAULT_WORKPLACE_NEEDS_PROMPT = `Based on the following comprehensive context about the target organisation **and Lepaya’s learning-solution capabilities**:
 
 <context>
 {context}
 </context>
 
-Please identify potential workplace needs (like training, coaching, or organizational development needs). For each identified need, answer the following questions clearly:
+<LepayaOverview>
+Lepaya is an Amsterdam-based people-development scale-up that converts learning into measurable business impact.  
+• Modular portfolio: 80+ power-skill modules, grouped into four academies – Young Talent, Professional, Leader, Commercial.  
+• Delivery model: micro-learning in the Lepaya app, three-hour interactive (virtual) classrooms, and AI-driven practice flows applied directly on the job.  
+• Data-driven personalisation: programmes start with a KPI- and skill-gap analysis, include assessments and continuous feedback loops.  
+• Tech backbone: mobile-first platform, real-time impact dashboards, generative-AI coaches.  
+• Proven results: ~50 % skill uplift; 90 % of learners apply new skills at work.  
+• Product forms: stand-alone modules, bundled academies, or full-service programmes with Impact Lab community support and impact reporting.  
+</LepayaOverview>
 
-1.  **Need Name:** What is a concise name for this workplace need (e.g., "Leadership Development Program", "Improving Sales Effectiveness", "Onboarding Process Enhancement")?
-2.  **Target Audience:** Which specific employee group(s) is the primary target for this need (e.g., "New Managers", "Senior Sales Team", "All Employees", "IT Department")?
-3.  **Lepaya Persona:** Which Lepaya persona does this audience best align with (Young Talent, Professional, Leader, Commercial)? Consider the primary focus.
-4.  **Audience Characteristics:** What are the key characteristics of this audience relevant to the need (e.g., "Limited prior management experience", "Technically skilled but needs soft skills", "Digital natives, prefer blended learning")?
-5.  **Strategic Alignment:** How does addressing this need align with the company's stated strategic business goals or overcome identified challenges?
-6.  **Obstacles:** What potential obstacles or blockers (e.g., "Time constraints", "Budget limitations", "Resistance to change", "Lack of internal expertise") must be considered or overcome?
-7.  **Success Measurement:** How will success be measured (e.g., "Reduced employee turnover in target group by 15%", "Increased average deal size by 10%", "Improved employee satisfaction scores on relevant topics", "Observed behavioral changes in 360-degree feedback")?
+**Task**  
+Identify the **five most promising workplace needs** (based on the Lepaya portfolio). For each need, answer:
 
-Structure the output clearly, perhaps grouping the answers per identified workplace need or per target audience/persona.`;
+1. **Need Name** – concise label (e.g., “Leadership Development Programme”).  
+2. **Target Audience** – specific employee segment(s).  
+3. **Lepaya Persona** – best-fit academy persona (Young Talent, Professional, Leader, Commercial).  
+4. **Audience Characteristics** – key traits relevant to the need (e.g., “Technically skilled, limited soft skills”).  
+5. **Strategic Alignment** – how solving this need supports the company’s stated goals or mitigates challenges.  
+6. **Obstacles** – likely blockers (time, budget, culture, etc.).  
+7. **Success Measurement** – clear KPI(s) or outcome metrics.  
+8. **Measurable Behaviour** – concrete behaviour the audience should demonstrate that ties directly to the organisational goal.
+
+**Output format**  
+Provide a structured list, group each set of eight answers under its corresponding workplace need. Use bullet points or a clean table – whichever maximises clarity.;
 
     // -- Field Configuration -- 
     const fieldConfig = {
