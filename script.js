@@ -432,8 +432,8 @@ Structure the output clearly, perhaps grouping the answers per identified workpl
         }
         const apiKey = localStorage.getItem('perplexity_api_key');
         if (!apiKey) {
-            // Redundant check if called from Generate All
-            // alert('Please set your Perplexity API key in Settings first.');
+            // Uncommented the alert for individual generate buttons
+            alert('Please set your Perplexity API key in Settings first.');
             return;
         }
         const selectedModel = localStorage.getItem('perplexity_model') || 'sonar'; 
