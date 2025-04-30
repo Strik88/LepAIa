@@ -842,4 +842,50 @@ h1 {
          align-self: center; /* Center settings link */
          order: 0; /* Keep original order */
     }
+}
+
+/* Feedback button styles */
+.feedback-button-container {
+    position: fixed;
+    bottom: 70px; /* Increased from 20px to avoid overlapping with settings */
+    right: 20px;
+    z-index: 1000;
+}
+
+.feedback-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background-color: #4E4CEC; /* Blurple color as seen in other elements */
+    color: white;
+    border-radius: 20px;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(78, 76, 236, 0.3);
+    transition: all 0.2s ease-in-out;
+}
+
+.feedback-button:hover {
+    background-color: #3A38CB; /* Darker Blurple for hover, matching other buttons */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(78, 76, 236, 0.4);
+}
+
+.feedback-button i {
+    font-size: 16px;
+}
+
+/* Add responsive styles for smaller screens */
+@media (max-width: 600px) {
+    .feedback-button-container {
+        bottom: 15px;
+        right: 15px;
+    }
+    
+    .feedback-button {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
 } 
