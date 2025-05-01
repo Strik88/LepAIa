@@ -1,16 +1,31 @@
 document.addEventListener('DOMContentLoaded', function() {
     // -- Default Prompts --
-    const DEFAULT_FULL_REPORT_PROMPT = `Create a comprehensive company profile for {companyName}. Include the following sections:\n\n1. Company Overview: Brief history, founding, mission, vision, and core values.\n2. Products and Services: Detailed description of main offerings.\n3. Market Position: Current market standing, market share if known, and competitive advantage.\n4. Leadership: Key executives and their backgrounds.\n5. Recent Developments: Latest news, product launches, or strategic shifts.\n6. Financial Summary: Overview of financial performance if publicly available.\n7. Future Outlook: Growth potential and strategic direction.\n\nFormat the response in clear sections with headings and bullet points where appropriate.`;
+    const DEFAULT_FULL_REPORT_PROMPT = `Generate a comprehensive profile of {companyName}, focusing on aspects relevant to a strategic people development partner like Lepaya. Provide insights into their business strategy, industry context, talent challenges, and potential needs for developing employee 'Power Skills' (a blend of soft and hard skills). Structure the report into the following sections: Company Profile, Industry Analysis, Key Challenges & Opportunities, and Strategic Recommendations for Lepaya. Ensure the information is concise, factual, and tailored for strategic decision-making regarding potential L&D partnerships.`;
     
-    const DEFAULT_INDUSTRY_PROMPT = `Provide a detailed industry analysis for {companyName}. Include:\n\n1. Industry Overview: Size, growth rate, and key characteristics.\n2. Competitive Landscape: Major players, market shares, and competitive dynamics.\n3. Industry Trends: Current trends, technological developments, and shifting consumer preferences.\n4. Regulatory Environment: Key regulations and compliance requirements.\n5. Challenges and Opportunities: Major challenges facing the industry and potential growth areas.\n6. Future Outlook: Predictions for the industry over the next 3-5 years.\n\nFormat the response with clear headings and bullet points where relevant.`;
+    const DEFAULT_INDUSTRY_PROMPT = `Analyze the key trends, challenges (e.g., skill gaps, digital transformation, talent retention), and opportunities within the primary industry of {companyName}. Specifically highlight:
+1.  How are competitors in this industry approaching talent development and addressing skill gaps?
+2.  What are the most critical 'Power Skills' (e.g., adaptability, data literacy, leadership, communication, collaboration) needed for success in this sector?
+3.  How is technology (like AI or data analytics) impacting workforce needs and L&D strategies in this industry?`;
 
-    const DEFAULT_CHALLENGES_PROMPT = `Analyze the challenges for {companyName}. Address these points:\n\n1. What internal bottlenecks limit growth or efficiency (processes, systems, skills)?\n2. Which external industry developments pose threats or present opportunities?\n3. Which regulations must the company comply with, and where are the compliance risks?\n4. How is the company currently addressing these challenges, and where do pain points remain?`;
+    const DEFAULT_CHALLENGES_PROMPT = `Based on the profile of {companyName} and its industry context, identify:
+1.  Major strategic challenges potentially related to talent, skills, or organizational development (e.g., adapting to change, innovation pace, leadership pipeline, employee engagement).
+2.  Significant opportunities for {companyName} where enhanced employee capabilities or targeted 'Power Skills' development could drive growth or competitive advantage.
+3.  Any indications of misalignment between their current workforce capabilities and future strategic needs.`;
 
-    const DEFAULT_STRATEGIC_PRIORITIES_PROMPT = `Outline the strategic priorities for {companyName}:\n\n1. What are the management's short- and long-term objectives?\n2. Which strategic projects and initiatives are in place to achieve these goals?\n3. Which transformation or change programs are currently underway?\n4. Which KPIs and performance metrics does the company use to measure success?`;
+    const DEFAULT_STRATEGIC_PRIORITIES_PROMPT = `Based on the analysis of {companyName}'s challenges and opportunities, suggest strategic recommendations focused *specifically* on how a partnership with Lepaya could add value. Consider:
+1.  Which specific Lepaya Academies (Young Talent, Professional, Leader, Commercial) or 'Power Skill' modules seem most relevant to address {companyName}'s identified needs?
+2.  How could Lepaya's blended learning approach (combining app-based microlearning, virtual classrooms, practice) fit their potential learning culture or operational constraints?
+3.  What arguments related to personalized learning paths, measurable impact (ROI, behavioral change), and data-driven insights would resonate most with {companyName}?`;
 
-    const DEFAULT_ADDITIONAL_INFO_PROMPT = `Provide additional context about {companyName}:\n\n1. How would you describe the company culture and core values in terms of observable behaviors?\n2. What major milestones, awards, or achievements has the company secured?\n3. Which CSR and sustainability initiatives has the company launched, and what are the outcomes?\n4. Are there any other unique stories or characteristics that strengthen the company's positioning?`;
+    const DEFAULT_ADDITIONAL_INFO_PROMPT = `Provide additional context about {companyName}, focusing on cultural and operational aspects relevant for a potential L&D partnership:
+1.  Describe their company culture and core values in terms of observable behaviors. Is there evidence of a growth mindset or focus on continuous learning?
+2.  What major recent milestones, awards, or achievements indicate their strategic priorities or areas of success?
+3.  Are there known CSR, sustainability, or DE&I initiatives that suggest a broader focus on people and societal impact?
+4.  Are there other unique characteristics (e.g., specific leadership styles, innovation focus) that are relevant for designing effective L&D interventions?`;
 
-    const DEFAULT_RELEVANT_LINKS_PROMPT = `List essential internal and external resources for {companyName}:\n\n1. Which internal and external resources (reports, whitepapers, presentations) are essential?\n2. What is the brief description and relevance of each resource?`;
+    const DEFAULT_RELEVANT_LINKS_PROMPT = `List essential internal and external resources related to {companyName}'s strategy and talent development:
+1.  Identify key public reports (annual reports, sustainability reports), whitepapers, or official presentations outlining strategic priorities or L&D initiatives.
+2.  Provide a brief description of each resource's relevance to understanding their business goals and potential skill needs.`;
 
     const DEFAULT_WORKPLACE_NEEDS_PROMPT = `Based on the following comprehensive context about {companyName}:
 
@@ -24,9 +39,12 @@ Please identify potential workplace needs (like training, coaching, or organizat
 2.  **Target Audience:** Which specific employee group(s) is the primary target for this need (e.g., "New Managers", "Senior Sales Team", "All Employees", "IT Department")?
 3.  **Lepaya Persona:** Which Lepaya persona does this audience best align with (Young Talent, Professional, Leader, Commercial)? Consider the primary focus.
 4.  **Audience Characteristics:** What are the key characteristics of this audience relevant to the need (e.g., "Limited prior management experience", "Technically skilled but needs soft skills", "Digital natives, prefer blended learning")?
-5.  **Strategic Alignment:** How does addressing this need align with the company's stated strategic business goals or overcome identified challenges?
-6.  **Obstacles:** What potential obstacles or blockers (e.g., "Time constraints", "Budget limitations", "Resistance to change", "Lack of internal expertise") must be considered or overcome?
-7.  **Success Measurement:** How will success be measured (e.g., "Reduced employee turnover in target group by 15%", "Increased average deal size by 10%", "Improved employee satisfaction scores on relevant topics", "Observed behavioral changes in 360-degree feedback")?
+5.  **Audience Goals:** What are the primary goals or performance expectations for this target audience that this need relates to?
+6.  **Current Audience Blockers:** What specific challenges, skill gaps, or blockers are **preventing this target audience from reaching the goals** identified in the previous point?
+7.  **Strategic Alignment:** How does addressing this need align with the company\'s stated strategic business goals or help overcome previously identified company-wide challenges?
+8.  **Expected Behaviors:** Describe 2-3 key, observable behaviors that employees in this target audience should demonstrate *more, better, or differently* after this need is addressed.
+9.  **Implementation Obstacles:** What potential obstacles or blockers (e.g., 'Time constraints', 'Budget limitations', 'Resistance to change', 'Lack of internal expertise') must be considered when implementing a solution (like training or coaching)?
+10. **Success Measurement:** How will success be measured (e.g., 'Reduced employee turnover in target group by 15%', 'Increased average deal size by 10%', 'Improved employee satisfaction scores on relevant topics', 'Observed behavioral changes in 360-degree feedback')?
 
 Structure the output clearly, perhaps grouping the answers per identified workplace need or per target audience/persona.`;
 
@@ -394,7 +412,7 @@ Structure the output clearly, perhaps grouping the answers per identified workpl
     // Load settings from localStorage into modal fields
     function loadSettings() {
         apiKeyInput.value = localStorage.getItem('perplexity_api_key') || '';
-        modelSelect.value = localStorage.getItem('perplexity_model') || 'sonar'; 
+        modelSelect.value = localStorage.getItem('perplexity_model') || 'sonar-reasoning';
         
         for (const fieldType of fieldTypes) {
             const config = fieldConfig[fieldType];
@@ -436,7 +454,7 @@ Structure the output clearly, perhaps grouping the answers per identified workpl
             alert('Please set your Perplexity API key in Settings first.');
             return;
         }
-        const selectedModel = localStorage.getItem('perplexity_model') || 'sonar'; 
+        const selectedModel = localStorage.getItem('perplexity_model') || 'sonar-reasoning';
 
         const config = fieldConfig[fieldType];
         const { outputDiv, editBtn } = elements[fieldType];
@@ -571,7 +589,7 @@ Structure the output clearly, perhaps grouping the answers per identified workpl
             alert('Please set your Perplexity API key in Settings first.');
             return;
         }
-        const selectedModel = localStorage.getItem('perplexity_model') || 'sonar';
+        const selectedModel = localStorage.getItem('perplexity_model') || 'sonar-reasoning';
 
         // Check if required fields are filled for the current company
         const companySpecificData = companyData[currentCompanyName] || {};
