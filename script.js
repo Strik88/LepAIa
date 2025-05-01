@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const DEFAULT_ADDITIONAL_INFO_PROMPT = `Provide additional context about {companyName}:\n\n1. How would you describe the company culture and core values in terms of observable behaviors?\n2. What major milestones, awards, or achievements has the company secured?\n3. Which CSR and sustainability initiatives has the company launched, and what are the outcomes?\n4. Are there any other unique stories or characteristics that strengthen the company's positioning?`;
 
-    const DEFAULT_RELEVANT_LINKS_PROMPT = `List essential internal and external resources for {companyName}:\n\n1. Which internal and external resources (reports, whitepapers, presentations) are essential?\n2. What is the brief description and relevance of each resource?\n\nProvide direct URLs where possible.`;
+    const DEFAULT_RELEVANT_LINKS_PROMPT = `List essential internal and external resources for {companyName}:\n\n1. Which internal and external resources (reports, whitepapers, presentations) are essential?\n2. What is the brief description and relevance of each resource?`;
 
     const DEFAULT_WORKPLACE_NEEDS_PROMPT = `Based on the following comprehensive context about {companyName}:
 
@@ -495,7 +495,7 @@ Structure the output clearly, perhaps grouping the answers per identified workpl
     }
     
     // Function to format and display the result using marked.js
-    // Stores result in companyData
+    // Stores result in companyData and adds citations/sources
     function formatResult(data, fieldType, targetElement, editBtn) { 
         if (!data || !data.choices || !data.choices[0] || !data.choices[0].message || !data.choices[0].message.content) {
             console.error('Invalid response format from API:', data);
@@ -506,15 +506,58 @@ Structure the output clearly, perhaps grouping the answers per identified workpl
         }
         
         const markdownContent = data.choices[0].message.content;
-        
-        // Store the result in the main data store for the current company
+        const citations = data?.citations; // Check for citations field
+
+        // Store the raw markdown result (without sources) in the main data store
         if (!companyData[currentCompanyName]) { 
             companyData[currentCompanyName] = {};
         }
         companyData[currentCompanyName][fieldType] = markdownContent; 
+
+        // Start preparing HTML output
+        let htmlOutput = '';
+        if (typeof marked !== 'undefined') {
+             try {
+                 htmlOutput = marked.parse(markdownContent || '', { gfm: true, breaks: true });
+             } catch (parseError) {
+                 console.error('Error parsing Markdown:', parseError);
+                 htmlOutput = '<p class="error">Error displaying content. Raw content logged to console.</p>';
+                 console.log('Raw content:', markdownContent);
+             }
+        } else {
+            console.error('marked.js is not loaded');
+            htmlOutput = '<p class="error">Error: Markdown library (marked.js) not loaded.</p>';
+        }
         
-        renderMarkdown(markdownContent, targetElement); // Render the markdown
-        // Edit button remains enabled
+        // Add citations/sources if they exist
+        if (Array.isArray(citations) && citations.length > 0) {
+            htmlOutput += '\n\n<h3 class="sources-title">Sources:</h3><ol class="sources-list">'; // Changed heading to "Sources:"
+            citations.forEach(url => {
+                // Create a list item with a link, opening in a new tab
+                try {
+                    // Attempt to create a URL object for better display (e.g., hostname)
+                    const urlObject = new URL(url);
+                    const displayUrl = urlObject.hostname + (urlObject.pathname === '/' ? '' : urlObject.pathname);
+                     htmlOutput += `<li><a href="${url}" target="_blank" rel="noopener noreferrer">${displayUrl}</a></li>`;
+                } catch (e) {
+                    // Fallback if URL is invalid
+                     htmlOutput += `<li><a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a></li>`;
+                }
+            });
+            htmlOutput += '</ol>'; // Close the ordered list
+        }
+        
+        targetElement.innerHTML = htmlOutput; // Set the final HTML
+        targetElement.classList.remove('loading', 'error'); // Ensure loading/error classes are removed
+
+        // Ensure all links in the newly set content open in a new tab
+        // (This might be redundant if marked.js already handles it, but safe to keep)
+        const links = targetElement.querySelectorAll('a');
+        links.forEach(link => {
+            link.setAttribute('target', '_blank');
+            link.setAttribute('rel', 'noopener noreferrer');
+        });
+        // Edit button remains enabled (or should be handled by caller)
     }
 
     // Special function to generate Workplace Needs
